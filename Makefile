@@ -1,4 +1,9 @@
 MODULE = disorder
+VERSION = 0.1
+ETC = etc
+WWW = ${ETC}/www
+PUBLISH_WWW = web@mth.io:${MODULE}.mth.io/data
+PUBLISH_RELEASE = web@mth.io:${MODULE}.mth.io/data/release/.
 GEN = gen
 DIST = ${GEN}/dist
 DIRS = ${GEN} ${DIST}
@@ -14,6 +19,9 @@ ${MODULE_DIST}: ${SRC} ${DIST}
 
 ${DIRS}:
 	mkdir -p $@
+
+www:
+	rsync -aH --stats --exclude \*~ ${WWW}/ ${PUBLISH_WWW}
 
 size:
 	find src -name \*.js -print0 | xargs -0 wc | sort -n
