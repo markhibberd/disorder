@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>  
+  <head>  
+    <script type="text/javascript" src="../../gen/dist/disorder.all.js"></script>  
+
+    <!-- Note arbitrary order, dependencies loaded after referer without issue. -->
+    <script type="text/javascript" src="../modules/blocks/multi.js"></script>  
+    <script type="text/javascript" src="../modules/blocks/red.js"></script>  
+    <script type="text/javascript" src="../modules/blocks/blue.js"></script>  
+
+    <script type="text/javascript">      
+      var demo = disorder.loader.fixed();
+
+      demo.using("blocks.multi", function (multi) {
+          window.onload = function () {
+              var el = document.getElementById("x");
+              multi.blat(el);
+          };
+      });
+    </script>  
+  </head>
+  <body>
+    <div id="x"></div>
+  </body>
+</html>
+

@@ -2,14 +2,62 @@ NAME
         disorder - small js loader
 
 DESCRIPTION
-        T.B.C.
+        Disorder is a library for defining and using modules in 
+        javascript. 
+
+        It's core features / requirements are:
+             . small, keep features to a minimum
+             . define modules in any order
+             . load using standard browse tags or dynamically
+             . declaration and application of dependencies
+             . seamlessly interact with non-disorder code
+             . switch resolution mechanisms without pervasive code changes
+        
 
 USAGE
-        T.B.C.
+        Defining modules:
+
+          disorder.fragment.wire("my.module", ["dependency1", "dependency2"], function (d1, d2) {
+                   // code away
+          });
+
+          
+        Loading modules, using the fundamental api:
+        
+          var resolver = function (name, onload) {
+              // resolve dependencies, could delegate to resolve api 
+              //          see: disorder.resolve.{fixed,url}
+          };
+
+          disorder.fragment.using(resolver, "my.module", function (module) {
+              // normal application code 
+          });
+        
+
+        Loading modules, using the convenience api with dynamic loading:
+          
+          var api = disorder.loader.url("/public/js");
+
+          api.using("my.module", function (module) {
+              // normal application code
+          });
+        
+
+        Loading modules, using the convenience api with fixed code:
+          
+          var api = disorder.loader.fixed();
+
+          api.using("my.module", function (module) {
+              // normal application code
+          });
+
 
 STATE
         The `disorder` library is currently under developent and is
-        considered experimental and subject to breaking change.
+        considered experimental and subject to breaking change. 
+
+        Having said that, the only missing feature intended for a 1.0 
+        release is a no conflict mode.
 
 AUTHOR
         Make Hibberd <mark@hibberd.id.au>
