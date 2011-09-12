@@ -1,0 +1,23 @@
+NAME
+        disorder - small js loader
+
+DESCRIPTION
+        T.B.C.
+
+USAGE
+        T.B.C.
+
+STATE
+        The `disorder` library is currently under developent and is
+        considered experimental and subject to breaking change.
+
+AUTHOR
+        Make Hibberd <mark@hibberd.id.au>
+
+NOTES
+        1. official repository
+           https://github.com/markhibberd/disorder
+        2. site and documentation
+           http://disorder.mth,io
+        3. license (3 point BSD style)
+           https://github.com/markhibberd/disorder/blob/master/LICENSE
