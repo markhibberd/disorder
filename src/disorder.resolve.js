@@ -1,5 +1,5 @@
 disorder.resolve = (function (resolve) {
-    resolve.fixed = function (scope, name, onload) {
+    resolve.fixed = function (scope, name, onload, onerror) {
         var parts = name.split(".");
 
         var check = function (obj, ps) {
@@ -8,24 +8,32 @@ disorder.resolve = (function (resolve) {
             var next = ps.shift();
             var r = obj[next];
             if (!r)
-                throw "Could not resolve [" + name + "]";
-            find(r, ps);
+                onerror();
+            else
+                find(r, ps);
         };
 
         check(scope, parts);
         onload();
     };
 
-    resolve.url = function (scope, prefix, munger, name, use) {
+    var ie = function (onload, onerror) {
+        return function () {
+            if (this.readyState == 'loaded' || this.readyState == 'complete') {
+                if (this.status >= 200 && this.status < 300)
+                    onload();
+                if (this.status >= 400)
+                    onerror();
+            }           
+        };
+    };
+
+    resolve.url = function (scope, prefix, munger, name, onload, onerror) {
         var script = document.createElement('script');
         script.type= 'text/javascript';
-        script.onreadystatechange = function () {
-            if (this.readyState == 'complete' || this.readyState == 'loaded') {
-                use && use();
-                use = null;
-            }
-        }
-        script.onload = use;
+        script.onreadystatechange = ie(onload, onerror);
+        script.onload =  onload;
+        script.onerror = onerror;
         script.src = prefix + "/" + munger(name);
         var head = document.getElementsByTagName('head')[0];
         head.appendChild(script);
@@ -37,3 +45,4 @@ disorder.resolve = (function (resolve) {
 
     return resolve;
 }({}))
+

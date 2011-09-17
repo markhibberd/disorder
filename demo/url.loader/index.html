@@ -3,19 +3,18 @@
   <head>  
     <script type="text/javascript" src="../../gen/dist/disorder.all.js"></script>  
 
-    <!-- Note arbitrary order, dependencies loaded after referer without issue. -->
-    <script type="text/javascript" src="../modules/blocks/multi.js"></script>  
-    <script type="text/javascript" src="../modules/blocks/red.js"></script>  
-    <script type="text/javascript" src="../modules/blocks/blue.js"></script>  
+    <!-- Note no explicit imports. -->
 
     <script type="text/javascript">      
-      var demo = disorder.loader.fixed();
+      var demo = disorder.loader.url("../modules");
 
       demo.using("blocks.multi", function (multi) {
           window.onload = function () {
               var el = document.getElementById("x");
               multi.blat(el);
           };
+      }, function () {
+          alert("oops");
       });
     </script>  
   </head>
@@ -23,4 +22,5 @@
     <div id="x"></div>
   </body>
 </html>
+
 

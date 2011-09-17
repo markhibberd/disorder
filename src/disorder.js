@@ -1,3 +1,7 @@
-// XXX no conflict mode.
-this.disorder = {};
-this.disorder.global = this;
+(function (global) {
+    var conflict = this.disorder;
+    global.disorder = {};
+    global.disorder.global = global;
+    global.disorder.conflict = conflict;    
+}(this))
+

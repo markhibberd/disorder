@@ -1,23 +1,24 @@
-disorder.fragment = (function (fragment, map, curry) {
+disorder.fragment = (function (fragment) {
     var definitions = {};
     var fragments = {};
 
     var define = function (definition, args, ondefine) {
+        var name = definition.name;
         fragments[name] = definition.fn.apply(null, args);
         ondefine && ondefine(fragments[name]);
-    }
+    };
 
-    var fragmenter = function (resolver, name, use) {
+    var fragmenter = function (resolver, name, use, error) {
         var definition = definitions[name];
         var dependencies = definition.dependencies;
         var args = [];
         var loop = function () {
             if (args.length == dependencies.length) 
-                define(definition, args, use)
+                define(definition, args, use);
             else
                 fragment.using(resolver, dependencies[args.length], function (d) {
                     args.push(d); loop();
-                });
+                }, error);
         };
         loop();
     };
@@ -35,18 +36,19 @@ disorder.fragment = (function (fragment, map, curry) {
     };
 
     /** use a fragment */
-    fragment.using = function (resolver, name, use) {
+    fragment.using = function (resolver, name, use, error) {
         if (!definitions[name])
             resolver(name, function () {
-                fragment.using(resolver, name, use);
-            });
-        else if (!definitions[name])
-            throw "can not load module [" + name + "]";
+                if (definitions[name])
+                    fragment.using(resolver, name, use, error);
+                else
+                    error();
+            }, error);
         else if (!fragments[name])
-            fragmenter(resolver, name, use);
+            fragmenter(resolver, name, use, error);
         else 
             use(fragments[name]);
     };
 
     return fragment;
-}({}, disorder._.map, disorder._.curry))
+}({}))
